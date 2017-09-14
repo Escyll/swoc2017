@@ -10,6 +10,7 @@ class MacroBot : public QObject
 public:
     explicit MacroBot(QString name, QString executablePath, QObject *parent = nullptr);
     void startProcess();
+    void stopProcess();
     void sendGameState(QString state);
     void receiveCommands();
     bool running();

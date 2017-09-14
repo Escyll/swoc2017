@@ -13,11 +13,11 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    Engine engine(argv[1], &a);
-    QObject::connect(&engine, &Engine::finished, &a, [&a]() { a.quit(); });
-    QObject::connect(&engine, &Engine::errorOccured, &a, [&a]() { a.quit(); });
-
-    QTimer::singleShot(0, &engine, SLOT(run()));
+    Engine* engine = new Engine(argv[1], &a);
+    QObject::connect(engine, &Engine::finished, &a, [&a]() { a.quit(); });
+    QObject::connect(engine, &Engine::errorOccured, &a, [&a]() { a.quit(); });
+    QObject::connect(engine, &Engine::destroyed, &a, [&a]() { a.quit(); });
+    QTimer::singleShot(0, engine, SLOT(run()));
 
     return a.exec();
 }

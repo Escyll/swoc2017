@@ -15,6 +15,12 @@ void MacroBot::startProcess()
     m_process->start(m_executablePath);
 }
 
+void MacroBot::stopProcess()
+{
+    m_process->kill();
+    m_process->waitForFinished(500);
+}
+
 void MacroBot::sendGameState(QString state)
 {
     std::cout <<  "Sending to bot: "<< m_name.toStdString() << " \"" << state.toStdString() << "\"" << std::endl;
