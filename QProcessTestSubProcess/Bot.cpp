@@ -1,4 +1,4 @@
-#include "bot.h"
+#include "Bot.h"
 
 #include <iostream>
 

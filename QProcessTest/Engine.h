@@ -1,8 +1,7 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include "MacroBot.h"
-#include "MicroGame.h"
+#include "MacroGame.h"
 
 #include <QObject>
 #include <QElapsedTimer>
@@ -19,20 +18,11 @@ signals:
     void errorOccured();
 
 public slots:
-    void run();
+    void startNewMacroGame();
 
 private:
     QString m_executable;
-    QTimer* m_tickTimer;
-    QElapsedTimer m_elapsedTimer;
-    QList<MacroBot*> m_macroBots;
-    QList<MicroGame*> m_microGames;
-
-    void startBots();
-    void killBots();
-    void killMicroGames();
-    void handleNextTick();
-    void communicateWithBots();
+    QList<MacroGame*> m_macroGames;
 };
 
 #endif // ENGINE_H

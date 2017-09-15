@@ -10,9 +10,18 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES += main.cpp \
-    engine.cpp \
     MacroBot.cpp \
-    MicroGame.cpp
+    MicroGame.cpp \
+    MacroGame.cpp \
+    Engine.cpp \
+    Universe.cpp \
+    Player.cpp \
+    Ufo.cpp \
+    Planet.cpp \
+    Fight.cpp \
+    SolarSystem.cpp \
+    GameObject.cpp \
+    UniverseBuilder.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -26,6 +35,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 HEADERS += \
-    engine.h \
     MacroBot.h \
-    MicroGame.h
+    MicroGame.h \
+    MacroGame.h \
+    Engine.h \
+    Universe.h \
+    Player.h \
+    Ufo.h \
+    Planet.h \
+    Fight.h \
+    SolarSystem.h \
+    GameObject.h \
+    UniverseBuilder.h

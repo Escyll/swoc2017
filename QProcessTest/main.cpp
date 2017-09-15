@@ -2,7 +2,7 @@
 #include <QTimer>
 #include <iostream>
 
-#include <engine.h>
+#include <Engine.h>
 
 int main(int argc, char *argv[])
 {
@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     QObject::connect(engine, &Engine::finished, &a, [&a]() { a.quit(); });
     QObject::connect(engine, &Engine::errorOccured, &a, [&a]() { a.quit(); });
     QObject::connect(engine, &Engine::destroyed, &a, [&a]() { a.quit(); });
-    QTimer::singleShot(0, engine, SLOT(run()));
+    QTimer::singleShot(0, engine, SLOT(startNewMacroGame()));
 
     return a.exec();
 }

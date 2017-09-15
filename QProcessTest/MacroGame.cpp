@@ -1,11 +1,8 @@
-#include "engine.h"
-
-#include <QTimer>
-#include <QDebug>
+#include "MacroGame.h"
 #include <iostream>
 
-Engine::Engine(QString executable, QObject *parent)
-    : QObject(parent)
+MacroGame::MacroGame(QString executable, QObject *parent)
+    : GameObject(parent)
     , m_executable(executable)
     , m_tickTimer(new QTimer(this))
 {
@@ -13,14 +10,14 @@ Engine::Engine(QString executable, QObject *parent)
     connect(m_tickTimer, &QTimer::timeout, this, [this]() { handleNextTick(); });
 }
 
-void Engine::run()
+void MacroGame::run()
 {
     startBots();
     m_elapsedTimer.start();
     m_tickTimer->start(1000);
 }
 
-void Engine::startBots()
+void MacroGame::startBots()
 {
     for (auto it = m_macroBots.begin(); it != m_macroBots.end(); it++)
     {
@@ -29,7 +26,7 @@ void Engine::startBots()
     }
 }
 
-void Engine::killBots()
+void MacroGame::killBots()
 {
     for (auto it = m_macroBots.begin(); it != m_macroBots.end(); it++)
     {
@@ -38,7 +35,7 @@ void Engine::killBots()
     }
 }
 
-void Engine::killMicroGames()
+void MacroGame::killMicroGames()
 {
     for (auto it = m_microGames.begin(); it != m_microGames.end(); it++)
     {
@@ -47,7 +44,7 @@ void Engine::killMicroGames()
     }
 }
 
-void Engine::handleNextTick()
+void MacroGame::handleNextTick()
 {
     if (m_elapsedTimer.elapsed() > 1e4)
     {
@@ -62,7 +59,7 @@ void Engine::handleNextTick()
     communicateWithBots();
 }
 
-void Engine::communicateWithBots()
+void MacroGame::communicateWithBots()
 {
     for (auto it = m_macroBots.begin(); it != m_macroBots.end(); it++)
     {
