@@ -4,6 +4,7 @@
 #include "Planet.h"
 
 #include <QObject>
+#include <QPoint>
 
 class SolarSystem : public GameObject
 {

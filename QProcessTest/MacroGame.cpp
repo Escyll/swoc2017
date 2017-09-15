@@ -1,11 +1,13 @@
 #include "MacroGame.h"
 #include <iostream>
 
-MacroGame::MacroGame(QString executable, QObject *parent)
+MacroGame::MacroGame(QString executable, Universe* universe, QObject *parent)
     : GameObject(parent)
     , m_executable(executable)
+    , m_universe(universe)
     , m_tickTimer(new QTimer(this))
 {
+    m_universe->setParent(this);
     m_macroBots << new MacroBot("Bot1", executable, this) << new MacroBot("Bot2", executable, this);
     connect(m_tickTimer, &QTimer::timeout, this, [this]() { handleNextTick(); });
 }

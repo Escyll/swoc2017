@@ -2,6 +2,7 @@
 #define ENGINE_H
 
 #include "MacroGame.h"
+#include "UniverseBuilder.h"
 
 #include <QObject>
 #include <QElapsedTimer>
@@ -23,6 +24,7 @@ public slots:
 private:
     QString m_executable;
     QList<MacroGame*> m_macroGames;
+    UniverseBuilder m_universeBuilder;
 };
 
 #endif // ENGINE_H

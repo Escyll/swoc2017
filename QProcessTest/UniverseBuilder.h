@@ -7,6 +7,7 @@
 class UniverseBuilder
 {
 public:
+    UniverseBuilder();
     Universe* buildUniverse();
 
 signals:
@@ -14,6 +15,7 @@ signals:
 public slots:
 
 private:
+    SolarSystem* buildSolarSystem();
     std::mt19937 m_randomGenerator;
 };
 

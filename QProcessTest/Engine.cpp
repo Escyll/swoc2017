@@ -11,7 +11,7 @@ Engine::Engine(QString executable, QObject *parent)
 
 void Engine::startNewMacroGame()
 {
-    auto newMacroGame = new MacroGame(m_executable, this);
+    auto newMacroGame = new MacroGame(m_executable, m_universeBuilder.buildUniverse(), this);
     m_macroGames << newMacroGame;
     connect(newMacroGame, &MacroGame::finished, this, [this, newMacroGame]()
     {

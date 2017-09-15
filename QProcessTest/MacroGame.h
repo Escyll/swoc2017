@@ -14,7 +14,7 @@ class MacroGame : public GameObject
 {
     Q_OBJECT
 public:
-    explicit MacroGame(QString executable, QObject *parent = nullptr);
+    MacroGame(QString executable, Universe *universe, QObject *parent = nullptr);
     void run();
 
 signals:
@@ -25,11 +25,12 @@ public slots:
 
 private:
     QString m_executable;
+    Universe* m_universe;
+
     QTimer* m_tickTimer;
     QElapsedTimer m_elapsedTimer;
     QList<MacroBot*> m_macroBots;
     QList<MicroGame*> m_microGames;
-    Universe m_universe;
 
     void startBots();
     void killBots();
