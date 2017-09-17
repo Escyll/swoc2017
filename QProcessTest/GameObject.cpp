@@ -1,6 +1,10 @@
 #include "GameObject.h"
 
-GameObject::GameObject(QObject *parent) : QObject(parent)
-{
+int GameObject::nextId = 0;
 
+GameObject::GameObject(QObject *parent)
+    : QObject(parent)
+{
+    std::lock_guard<std::mutex> lock(m_idMutex);
+    m_id = ++nextId;
 }

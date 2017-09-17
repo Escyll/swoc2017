@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "SolarSystem.h"
 
+#include <QJsonObject>
 #include <QObject>
 
 class Universe : public GameObject
@@ -12,6 +13,8 @@ class Universe : public GameObject
     Q_OBJECT
 public:
     explicit Universe(QList<SolarSystem*> solarSystems, QObject *parent = nullptr);
+    void writeState(QJsonObject& gameState);
+    void applyTick(double durationInSeconds);
 
 signals:
 

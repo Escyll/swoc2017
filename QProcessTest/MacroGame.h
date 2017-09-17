@@ -31,12 +31,15 @@ private:
     QElapsedTimer m_elapsedTimer;
     QList<MacroBot*> m_macroBots;
     QList<MicroGame*> m_microGames;
+    int m_currentTick;
+    QString m_name;
 
     void startBots();
     void killBots();
     void killMicroGames();
-    void handleNextTick();
+    void handleTick();
     void communicateWithBots();
+    QJsonObject generateGameState();
 };
 
 #endif // MACROGAME_H

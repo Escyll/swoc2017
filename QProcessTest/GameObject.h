@@ -2,6 +2,7 @@
 #define GAMEOBJECT_H
 
 #include <QObject>
+#include <mutex>
 
 class GameObject : public QObject
 {
@@ -12,8 +13,11 @@ public:
 signals:
 
 public slots:
-private:
+protected:
     int m_id;
+private:
+    static int nextId;
+    std::mutex m_idMutex;
 };
 
 #endif // GAMEOBJECT_H

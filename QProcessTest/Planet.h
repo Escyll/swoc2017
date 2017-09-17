@@ -9,7 +9,9 @@ class Planet : public GameObject
 {
     Q_OBJECT
 public:
-    Planet(QString name, int orbitDistance, int orbitRotation, double orbitSpeed, QObject *parent = nullptr);
+    Planet(QString name, int orbitDistance, double orbitRotation, double orbitSpeed, QObject *parent = nullptr);
+    void writeState(QJsonObject& gameState) const;
+    void applyTick(double durationInSeconds);
 
 signals:
 
@@ -18,7 +20,7 @@ public slots:
 private:
     QString m_name;
     int m_orbitDistance;
-    int m_orbitRotation;
+    double m_orbitRotation;
     double m_orbitSpeed;
     int m_ownedBy;
 };

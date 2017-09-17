@@ -1,4 +1,8 @@
 #include "MacroGame.h"
+#include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QTextStream>
 #include <iostream>
 
 MacroGame::MacroGame(QString executable, Universe* universe, QObject *parent)
@@ -6,10 +10,12 @@ MacroGame::MacroGame(QString executable, Universe* universe, QObject *parent)
     , m_executable(executable)
     , m_universe(universe)
     , m_tickTimer(new QTimer(this))
+    , m_currentTick(1)
+    , m_name("Match ###")
 {
     m_universe->setParent(this);
     m_macroBots << new MacroBot("Bot1", executable, this) << new MacroBot("Bot2", executable, this);
-    connect(m_tickTimer, &QTimer::timeout, this, [this]() { handleNextTick(); });
+    connect(m_tickTimer, &QTimer::timeout, this, [this]() { handleTick(); });
 }
 
 void MacroGame::run()
@@ -46,23 +52,36 @@ void MacroGame::killMicroGames()
     }
 }
 
-void MacroGame::handleNextTick()
+void MacroGame::handleTick()
 {
-    if (m_elapsedTimer.elapsed() > 1e4)
+    if (m_elapsedTimer.elapsed() > 600e3)
     {
-        std::cout << "\nShutting processes down..." << std::endl;
         m_tickTimer->stop();
         killBots();
         killMicroGames();
         deleteLater();
-        std::cout << "\nBye!" << std::endl;
         return;
     }
+
+    m_universe->applyTick(1.0);
+
     communicateWithBots();
+    m_currentTick++;
 }
 
 void MacroGame::communicateWithBots()
 {
+    QJsonDocument gameStateDoc(generateGameState());
+    auto gameStateJson = gameStateDoc.toJson(QJsonDocument::Indented);
+    // Write game state
+    QFile file("macro_" + QString::number(m_currentTick) + ".json");
+    if (file.open(QIODevice::ReadWrite))
+    {
+        QTextStream stream(&file);
+        stream << gameStateJson;
+    }
+
+
     for (auto it = m_macroBots.begin(); it != m_macroBots.end(); it++)
     {
         auto macroBot = *it;
@@ -72,4 +91,21 @@ void MacroGame::communicateWithBots()
             macroBot->receiveCommands();
         }
     }
+}
+
+QJsonObject MacroGame::generateGameState()
+{
+    QJsonObject gameState;
+    gameState["id"] = m_id;
+    gameState["name"] = m_name;
+    gameState["tick"] = m_currentTick;
+    QJsonArray players;
+    gameState["players"] = players;
+
+    QJsonArray fights;
+    gameState["fights"] = fights;
+    m_universe->writeState(gameState);
+
+
+    return gameState;
 }
