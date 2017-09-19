@@ -9,6 +9,7 @@ class GameObject : public QObject
     Q_OBJECT
 public:
     explicit GameObject(QObject *parent = nullptr);
+    int getId() const;
 
 signals:
 

@@ -7,6 +7,7 @@
 #include "Universe.h"
 
 #include <QElapsedTimer>
+#include <QMap>
 #include <QObject>
 #include <QTimer>
 
@@ -32,6 +33,9 @@ private:
     QList<MacroBot*> m_macroBots;
     QList<MicroGame*> m_microGames;
     int m_currentTick;
+    double m_tickDurationInSeconds;
+    QMap<Player*, MacroBot*> m_playerBotMap;
+    QMap<MacroBot*, Player*> m_botPlayerMap;
     QString m_name;
 
     void startBots();

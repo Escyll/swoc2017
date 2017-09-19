@@ -26,3 +26,8 @@ void Planet::applyTick(double durationInSeconds)
 {
     m_orbitRotation += 360.0*durationInSeconds / m_orbitSpeed;
 }
+
+int Planet::getOwnedBy()
+{
+    return m_ownedBy;
+}

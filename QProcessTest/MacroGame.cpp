@@ -11,10 +11,31 @@ MacroGame::MacroGame(QString executable, Universe* universe, QObject *parent)
     , m_universe(universe)
     , m_tickTimer(new QTimer(this))
     , m_currentTick(1)
+    , m_tickDurationInSeconds(1.0)
     , m_name("Match ###")
 {
     m_universe->setParent(this);
-    m_macroBots << new MacroBot("Bot1", executable, this) << new MacroBot("Bot2", executable, this);
+
+    auto player1 = new Player("Bot1", this);
+    player1->giveUfo(new Ufo());
+    player1->giveUfo(new Ufo());
+    player1->giveUfo(new Ufo());
+    auto bot1 = new MacroBot(executable, this);
+    auto player2 = new Player("Bot2", this);
+    player2->giveUfo(new Ufo());
+    player2->giveUfo(new Ufo());
+    player2->giveUfo(new Ufo());
+    auto bot2 = new MacroBot(executable, this);
+
+    m_universe->addPlayer(player1);
+    m_universe->addPlayer(player2);
+    m_macroBots << bot1 << bot2;
+
+    m_playerBotMap[player1] = bot1;
+    m_playerBotMap[player2] = bot2;
+    m_botPlayerMap[bot1] = player1;
+    m_botPlayerMap[bot2] = player2;
+
     connect(m_tickTimer, &QTimer::timeout, this, [this]() { handleTick(); });
 }
 
@@ -22,7 +43,7 @@ void MacroGame::run()
 {
     startBots();
     m_elapsedTimer.start();
-    m_tickTimer->start(1000);
+    m_tickTimer->start(m_tickDurationInSeconds * 1000);
 }
 
 void MacroGame::startBots()
@@ -63,7 +84,7 @@ void MacroGame::handleTick()
         return;
     }
 
-    m_universe->applyTick(1.0);
+    m_universe->applyTick(m_tickDurationInSeconds);
 
     communicateWithBots();
     m_currentTick++;
@@ -81,14 +102,19 @@ void MacroGame::communicateWithBots()
         stream << gameStateJson;
     }
 
-
-    for (auto it = m_macroBots.begin(); it != m_macroBots.end(); it++)
+    auto players = m_universe->getPlayers();
+    foreach (Player* player, players)
     {
-        auto macroBot = *it;
+        auto macroBot = m_playerBotMap[player];
         if (macroBot->running())
         {
-            macroBot->sendGameState("Ping?");
-            macroBot->receiveCommands();
+            macroBot->sendGameState(gameStateDoc.toJson(QJsonDocument::Compact));
+            QStringList commands = macroBot->receiveCommands();
+            foreach (QString command, commands)
+            {
+                // Handle command
+                std::cout << player->getName().toStdString() << ": " << command.toStdString() << std::endl;
+            }
         }
     }
 }

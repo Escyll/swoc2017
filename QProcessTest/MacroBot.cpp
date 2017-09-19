@@ -2,9 +2,8 @@
 
 #include <iostream>
 
-MacroBot::MacroBot(QString name, QString executablePath, QObject *parent)
+MacroBot::MacroBot(QString executablePath, QObject *parent)
     : QObject(parent)
-    , m_name(name)
     , m_executablePath(executablePath)
 {
 }
@@ -23,19 +22,22 @@ void MacroBot::stopProcess()
 
 void MacroBot::sendGameState(QString state)
 {
-    std::cout <<  "Sending to bot: "<< m_name.toStdString() << " \"" << state.toStdString() << "\"" << std::endl;
     if (!state.contains("\n"))
         state = state + "\n";
     m_process->write(state.toStdString().c_str());
 }
 
-void MacroBot::receiveCommands()
+QStringList MacroBot::receiveCommands()
 {
-    char buf[1024];
-    qint64 lineLength =  m_process->readLine(buf, sizeof(buf));
-    if (lineLength > 0) {
-        std::cout <<  "Received from bot: "<< m_name.toStdString() << " \"" << buf << "\"" << std::endl;
-    }
+    char buf[1000000];
+    m_process->readLine(buf, sizeof(buf));
+    QString commands(buf);
+
+    auto splitCommands = commands.split('\n');
+    splitCommands.removeLast();
+    return splitCommands;
+
+    Q_UNUSED(lineLength)
 }
 
 bool MacroBot::running()

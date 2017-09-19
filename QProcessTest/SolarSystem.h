@@ -13,6 +13,7 @@ public:
     explicit SolarSystem(QString name, QPoint coord, QList<Planet*> planets, QObject *parent = nullptr);
     void writeState(QJsonObject& gameState) const;
     void applyTick(double durationInSeconds);
+    QList<Planet*> getPlanets();
 
 signals:
 

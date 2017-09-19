@@ -8,3 +8,8 @@ GameObject::GameObject(QObject *parent)
     std::lock_guard<std::mutex> lock(m_idMutex);
     m_id = ++nextId;
 }
+
+int GameObject::getId() const
+{
+    return m_id;
+}

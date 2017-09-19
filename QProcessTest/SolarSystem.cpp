@@ -38,3 +38,8 @@ void SolarSystem::applyTick(double durationInSeconds)
         planet->applyTick(durationInSeconds);
     }
 }
+
+QList<Planet*> SolarSystem::getPlanets()
+{
+    return m_planets;
+}

@@ -21,7 +21,13 @@ SOURCES += main.cpp \
     Fight.cpp \
     SolarSystem.cpp \
     GameObject.cpp \
-    UniverseBuilder.cpp
+    UniverseBuilder.cpp \
+    UfoShop.cpp \
+    CommandBase.cpp \
+    BuyCommand.cpp \
+    ConquerCommand.cpp \
+    MoveToCoordCommand.cpp \
+    MoveToPlanetCommand.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -46,4 +52,10 @@ HEADERS += \
     Fight.h \
     SolarSystem.h \
     GameObject.h \
-    UniverseBuilder.h
+    UniverseBuilder.h \
+    UfoShop.h \
+    CommandBase.h \
+    BuyCommand.h \
+    ConquerCommand.h \
+    MoveToCoordCommand.h \
+    MoveToPlanetCommand.h
