@@ -94,7 +94,7 @@ void MacroGame::handleTick()
 
 std::unique_ptr<CommandBase> createCommand(const QJsonObject object)
 {
-    if (object["command"].toString() == "moveToPlanet")
+    if (object["Command"].toString() == "moveToPlanet")
     {
         return std::make_unique<MoveToPlanetCommand>();
     }
