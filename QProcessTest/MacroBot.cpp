@@ -36,8 +36,6 @@ QStringList MacroBot::receiveCommands()
     auto splitCommands = commands.split('\n');
     splitCommands.removeLast();
     return splitCommands;
-
-    Q_UNUSED(lineLength)
 }
 
 bool MacroBot::running()

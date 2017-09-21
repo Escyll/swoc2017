@@ -6,7 +6,14 @@
 class MoveToPlanetCommand : public CommandBase
 {
 public:
-    explicit MoveToPlanetCommand(QObject* parent);
+    explicit MoveToPlanetCommand(QObject* parent = nullptr);
+
+    void readCommand(const QJsonObject jsonObject) override;
+    void printCommand();
+
+private:
+    QList<int> m_ufos;
+    int m_planetId;
 };
 
 #endif // MOVETOPLANETCOMMAND_H

@@ -1,4 +1,6 @@
+#include "CommandBase.h"
 #include "MacroGame.h"
+#include "MoveToPlanetCommand.h"
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -16,25 +18,25 @@ MacroGame::MacroGame(QString executable, Universe* universe, QObject *parent)
 {
     m_universe->setParent(this);
 
-    auto player1 = new Player("Bot1", this);
+    auto player1 = new Player("dwight", this);
     player1->giveUfo(new Ufo());
     player1->giveUfo(new Ufo());
     player1->giveUfo(new Ufo());
-    auto bot1 = new MacroBot(executable, this);
-    auto player2 = new Player("Bot2", this);
-    player2->giveUfo(new Ufo());
-    player2->giveUfo(new Ufo());
-    player2->giveUfo(new Ufo());
-    auto bot2 = new MacroBot(executable, this);
+    auto bot1 = new MacroBot("C:/Users/Gebruiker/Desktop/Debug/MacroBot.exe", this);
+//    auto player2 = new Player("Bot2", this);
+//    player2->giveUfo(new Ufo());
+//    player2->giveUfo(new Ufo());
+//    player2->giveUfo(new Ufo());
+//    auto bot2 = new MacroBot(executable, this);
 
     m_universe->addPlayer(player1);
-    m_universe->addPlayer(player2);
-    m_macroBots << bot1 << bot2;
+    //m_universe->addPlayer(player2);
+    m_macroBots << bot1;// << bot2;
 
     m_playerBotMap[player1] = bot1;
-    m_playerBotMap[player2] = bot2;
+    //m_playerBotMap[player2] = bot2;
     m_botPlayerMap[bot1] = player1;
-    m_botPlayerMap[bot2] = player2;
+    //m_botPlayerMap[bot2] = player2;
 
     connect(m_tickTimer, &QTimer::timeout, this, [this]() { handleTick(); });
 }
@@ -90,6 +92,15 @@ void MacroGame::handleTick()
     m_currentTick++;
 }
 
+std::unique_ptr<CommandBase> createCommand(const QJsonObject object)
+{
+    if (object["command"].toString() == "moveToPlanet")
+    {
+        return std::make_unique<MoveToPlanetCommand>();
+    }
+    return std::make_unique<MoveToPlanetCommand>();
+}
+
 void MacroGame::communicateWithBots()
 {
     QJsonDocument gameStateDoc(generateGameState());
@@ -108,12 +119,17 @@ void MacroGame::communicateWithBots()
         auto macroBot = m_playerBotMap[player];
         if (macroBot->running())
         {
-            macroBot->sendGameState(gameStateDoc.toJson(QJsonDocument::Compact));
+            macroBot->sendGameState(gameStateDoc.toJson(QJsonDocument::Compact) + "\r\n");
             QStringList commands = macroBot->receiveCommands();
-            foreach (QString command, commands)
+            foreach (QString commandString, commands)
             {
                 // Handle command
-                std::cout << player->getName().toStdString() << ": " << command.toStdString() << std::endl;
+                QJsonParseError error;
+                auto doc = QJsonDocument::fromJson(commandString.toUtf8(), &error);
+                auto object = doc.object();
+                std::unique_ptr<CommandBase> command = createCommand(object);
+                command->readCommand(object);
+                command->printCommand();
             }
         }
     }
