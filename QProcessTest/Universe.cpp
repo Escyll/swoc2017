@@ -30,6 +30,10 @@ void Universe::writeState(QJsonObject& gameState)
         playerArray.append(playerObject);
     }
     gameState["players"] = playerArray;
+
+    // TODO
+    QJsonArray fights;
+    gameState["fights"] = fights;
 }
 
 void Universe::applyTick(double durationInSeconds)

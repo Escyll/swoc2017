@@ -24,17 +24,20 @@ void MacroBot::sendGameState(QString state)
 {
     if (!state.contains("\n"))
         state = state + "\n";
-    m_process->write(state.toStdString().c_str());
+    if (m_process->state() == QProcess::Running)
+        m_process->write(state.toStdString().c_str());
 }
 
 QStringList MacroBot::receiveCommands()
 {
-    char buf[1000000];
-    m_process->readLine(buf, sizeof(buf));
+    unsigned long bytesAvailable = static_cast<unsigned long>(m_process->bytesAvailable());
+    char* buf = new char[bytesAvailable];
+    m_process->readLine(buf, static_cast<qint64>(bytesAvailable));
     QString commands(buf);
+    delete[] buf;
 
     auto splitCommands = commands.split('\n');
-    splitCommands.removeLast();
+    splitCommands.removeAll("");
     return splitCommands;
 }
 

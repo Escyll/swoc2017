@@ -19,7 +19,7 @@ void Bot::run()
 //        else
 //            std::cout << "Ik snap het niet :(." << std::endl;
         QList<int> ufos;
-        ufos << 1 << 2 << 3;
+        ufos << 1 << 2 << 4;
 
         QString command = MoveToPlanetCommand(ufos, 5).toJson();
         std::cout << command.toStdString() << std::endl;

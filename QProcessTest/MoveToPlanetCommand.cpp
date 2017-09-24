@@ -7,6 +7,7 @@
 
 MoveToPlanetCommand::MoveToPlanetCommand(QObject* parent)
     : CommandBase(parent)
+    , m_planetId(-1)
 {
 
 }
@@ -24,8 +25,8 @@ void MoveToPlanetCommand::readCommand(const QJsonObject jsonObject)
 
 void MoveToPlanetCommand::printCommand()
 {
-    std::cout << "planet: " << m_planetId << "\nufos: " << std::endl;
-    foreach (int ufo, m_ufos)
+    std::cout << "MoveToPlanet >> Planet: " << m_planetId << "\nUfos: " << std::endl;
+    for (int ufo : m_ufos)
     {
         std::cout << ufo << " ";
     }

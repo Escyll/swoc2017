@@ -5,11 +5,13 @@
 #include "MacroBot.h"
 #include "MicroGame.h"
 #include "Universe.h"
+#include "CommandBase.h"
 
 #include <QElapsedTimer>
 #include <QMap>
 #include <QObject>
 #include <QTimer>
+#include <memory>
 
 class MacroGame : public GameObject
 {
@@ -42,8 +44,13 @@ private:
     void killBots();
     void killMicroGames();
     void handleTick();
-    void communicateWithBots();
+    void communicateWithBots(QJsonDocument gameStateDoc);
     QJsonObject generateGameState();
+    void stopMacroGame();
+    bool gameTimeOver();
+    void writeGameState(QJsonDocument doc);
+    void communicateWithBot(Player* player, QJsonDocument gameStateDoc);
+    std::unique_ptr<CommandBase> createCommand(const QJsonObject object);
 };
 
 #endif // MACROGAME_H

@@ -9,7 +9,7 @@ public:
     explicit MoveToPlanetCommand(QObject* parent = nullptr);
 
     void readCommand(const QJsonObject jsonObject) override;
-    void printCommand();
+    void printCommand() override;
 
 private:
     QList<int> m_ufos;

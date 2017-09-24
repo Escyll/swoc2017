@@ -15,13 +15,13 @@ MoveToPlanetCommand::MoveToPlanetCommand(QList<int> ufos, int planetId, QObject 
 QString MoveToPlanetCommand::toJson() const
 {
     QJsonObject jsonObject;
-    jsonObject["command"] = m_command;
+    jsonObject["Command"] = m_command;
     QJsonArray ufoArray;
     foreach (int ufo, m_ufos)
     {
         ufoArray << ufo;
     }
-    jsonObject["ufos"] = ufoArray;
-    jsonObject["planetId"] = m_planetId;
+    jsonObject["Ufos"] = ufoArray;
+    jsonObject["PlanetId"] = m_planetId;
     return QJsonDocument(jsonObject).toJson(QJsonDocument::Compact);
 }
