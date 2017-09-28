@@ -21,25 +21,29 @@ MacroGame::MacroGame(QString executable, Universe* universe, QObject *parent)
 {
     m_universe->setParent(this);
 
-    auto player1 = new Player("dwight", this);
-    player1->giveUfo(new Ufo());
-    player1->giveUfo(new Ufo());
-    player1->giveUfo(new Ufo());
-    //auto bot1 = new MacroBot("C:/Users/Gebruiker/Desktop/Debug/MacroBot.exe", this);
-    auto bot1 = new MacroBot(executable, this);
+//    auto player1 = new Player("dwight", this);
+//    player1->giveUfo(new Ufo());
+//    player1->giveUfo(new Ufo());
+//    player1->giveUfo(new Ufo());
+//    //auto bot1 = new MacroBot("C:/Users/Gebruiker/Desktop/Debug/MacroBot.exe", this);
+//    auto bot1 = new MacroBot("python", "D:\\helloWorld.py", this);
+    //auto bot1 = new MacroBot(executable, this);
     auto player2 = new Player("Bot2", this);
     player2->giveUfo(new Ufo());
     player2->giveUfo(new Ufo());
     player2->giveUfo(new Ufo());
-    auto bot2 = new MacroBot(executable, this);
+    //auto bot2 = new MacroBot("python", "D:\\helloWorld.py /C", this);
+    auto bot2 = new MacroBot("cmd.exe", "Z:\\Release\\MacroBot.exe", this);
+    //"python D:\\helloWorld.py"
+    //auto bot2 = new MacroBot("cmd.exe", "-v", this);
 
-    m_universe->addPlayer(player1);
+    //m_universe->addPlayer(player1);
     m_universe->addPlayer(player2);
-    m_macroBots << bot1 << bot2;
+    m_macroBots << bot2; //bot1 << bot2;
 
-    m_playerBotMap[player1] = bot1;
+    //m_playerBotMap[player1] = bot1;
     m_playerBotMap[player2] = bot2;
-    m_botPlayerMap[bot1] = player1;
+    //m_botPlayerMap[bot1] = player1;
     m_botPlayerMap[bot2] = player2;
 
     connect(m_tickTimer, &QTimer::timeout, this, [this]() { handleTick(); });
@@ -144,10 +148,12 @@ void MacroGame::communicateWithBot(Player* player, QJsonDocument gameStateDoc)
 
 void MacroGame::communicateWithBots(QJsonDocument gameStateDoc)
 {
+    std::cout << "Talking" << std::endl;
     for (auto player : m_universe->getPlayers())
     {
         communicateWithBot(player, gameStateDoc);
     }
+    std::cout << std::flush;
 }
 
 QJsonObject MacroGame::generateGameState()
@@ -179,5 +185,5 @@ std::unique_ptr<CommandBase> MacroGame::createCommand(const QJsonObject object)
     {
         return std::make_unique<ConquerCommand>();
     }
-    return std::make_unique<MoveToPlanetCommand>();
+    throw std::exception("Stuff broke");
 }

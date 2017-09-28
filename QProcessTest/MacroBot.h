@@ -8,7 +8,7 @@ class MacroBot : public QObject
 {
     Q_OBJECT
 public:
-    explicit MacroBot(QString executablePath, QObject *parent = nullptr);
+    explicit MacroBot(QString executable, QString arguments, QObject *parent = nullptr);
     void startProcess();
     void stopProcess();
     void sendGameState(QString state);
@@ -20,7 +20,9 @@ signals:
 public slots:
 
 private:
-    QString m_executablePath;
+    QString m_executable;
+    QString m_arguments;
+
     QProcess* m_process;
 };
 
